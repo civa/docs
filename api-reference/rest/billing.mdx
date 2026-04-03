@@ -1,0 +1,102 @@
+---
+title: "Billing"
+description: "Balance, deposits, and subscription management endpoints."
+---
+
+## Get Balance
+
+```
+GET /auth/billing/balance
+```
+
+Returns your account balance.
+
+```json
+{
+  "balance": 500000000
+}
+```
+
+Balance is scaled by 100,000,000 (1 SOL = 100,000,000 units).
+
+## Get Deposit Info
+
+```
+GET /auth/billing/memo
+```
+
+Returns your unique deposit address and memo for SOL deposits.
+
+```json
+{
+  "memo": "solami_abc123",
+  "deposit_address": "So1ami..."
+}
+```
+
+## Get Subscription
+
+```
+GET /auth/billing/subscription
+```
+
+```json
+{
+  "subscription": "Pro",
+  "billing_cycle": "Monthly",
+  "starts": 1700000000,
+  "expires": 1702592000,
+  "paid_amount": 9900,
+  "renewal_disabled": false,
+  "payment_provider": "balance"
+}
+```
+
+### Subscription Tiers
+
+`Free` | `Dev` | `Pro` | `Ultra` | `SharedMetal`
+
+### Billing Cycles
+
+`Monthly` | `Quarterly` | `SemiAnnual` | `Annual`
+
+## Upgrade Plan
+
+```
+POST /auth/billing/upgrade
+```
+
+```json
+{
+  "new_plan": "Pro",
+  "duration_months": 1
+}
+```
+
+## Extend Plan
+
+```
+POST /auth/billing/extend
+```
+
+```json
+{
+  "duration_months": 1
+}
+```
+
+## Cancel Subscription
+
+```
+POST /auth/billing/cancel
+```
+
+Prevents auto-renewal. Plan remains active until expiry.
+
+## Reactivate Subscription
+
+```
+POST /auth/billing/reactivate
+```
+
+Re-enables auto-renewal for a canceled subscription.

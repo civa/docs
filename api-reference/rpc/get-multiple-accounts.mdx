@@ -1,0 +1,110 @@
+---
+title: "getMultipleAccounts"
+description: "Returns account data for a list of public keys."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getMultipleAccounts",
+  "params": [
+    [
+      "vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg",
+      "4fYNw3dojWmQ4dXtSGE9epjRGy9pFSx62YypT7avPYvA"
+    ],
+    {
+      "encoding": "base64"
+    }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| pubkeys | array of strings | Array of base-58 encoded public keys to query, up to 100. Required. |
+| config | object | Optional configuration object. |
+| config.commitment | string | Commitment level (`processed`, `confirmed`, `finalized`). |
+| config.encoding | string | Encoding for account data: `base58`, `base64`, `base64+zstd`, or `jsonParsed`. |
+| config.dataSlice | object | Limit returned data with `offset` (usize) and `length` (usize) fields. |
+| config.minContextSlot | number | Minimum slot at which the request can be evaluated. |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "context": {
+      "slot": 341197247
+    },
+    "value": [
+      {
+        "data": ["", "base64"],
+        "executable": false,
+        "lamports": 88849814690250,
+        "owner": "11111111111111111111111111111111",
+        "rentEpoch": 18446744073709551615,
+        "space": 0
+      },
+      {
+        "data": ["", "base64"],
+        "executable": false,
+        "lamports": 998763433,
+        "owner": "2WRuhE4GJFoE23DYzp2ij6ZnuQ8p9mJeU6gDgfsjR4or",
+        "rentEpoch": 18446744073709551615,
+        "space": 0
+      }
+    ]
+  }
+}
+```
+
+The `value` field contains an array of account objects matching the order of the requested public keys. Entries are `null` if the corresponding account is not found.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "getMultipleAccounts",
+    "params": [
+      [
+        "vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg",
+        "4fYNw3dojWmQ4dXtSGE9epjRGy9pFSx62YypT7avPYvA"
+      ],
+      {"encoding": "base64"}
+    ]
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getMultipleAccounts",
+    params: [
+      [
+        "vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg",
+        "4fYNw3dojWmQ4dXtSGE9epjRGy9pFSx62YypT7avPYvA",
+      ],
+      { encoding: "base64" },
+    ],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

@@ -1,0 +1,67 @@
+---
+title: "getBlockCommitment"
+description: "Returns stake-weighted commitment for a slot."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getBlockCommitment",
+  "params": [5]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| slot | u64 | Slot number to query commitment for (required) |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "commitment": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 497717120],
+    "totalStake": 497717120
+  }
+}
+```
+
+- `commitment` - Array of u64 values representing stake-weighted commitment per confirmation level, or `null` if the slot is unknown.
+- `totalStake` - Total active stake in lamports for the current epoch.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "getBlockCommitment",
+    "params": [5]
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getBlockCommitment",
+    params: [5],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

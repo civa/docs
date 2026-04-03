@@ -1,0 +1,85 @@
+---
+title: "getInflationReward"
+description: "Returns inflation rewards for a list of addresses."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getInflationReward",
+  "params": [
+    [
+      "6dmNQ5jwLeLk5REvio1JcMshcbvkYMwy26sJ8pbkvStu",
+      "BGsqMegLpV6n6Ve146sSX2dTjUMj3M92HnU8BbNRMhF2"
+    ],
+    { "epoch": 800 }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| addresses | array of strings | (Required) Array of account addresses to query. |
+| config | object | (Optional) Configuration object with `commitment`, `epoch` (u64), and `minContextSlot` (u64) fields. |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": [
+    {
+      "epoch": 2,
+      "effectiveSlot": 224,
+      "amount": 2500,
+      "postBalance": 499999442500,
+      "commission": null
+    },
+    null
+  ],
+  "id": 1
+}
+```
+
+- `epoch` - The epoch for which the reward was earned.
+- `effectiveSlot` - The slot in which the rewards became active.
+- `amount` - Reward amount in lamports.
+- `postBalance` - Post-reward balance in lamports.
+- `commission` - Vote account commission when the reward was credited, or `null`.
+- Entries are `null` if no reward was available for that address.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getInflationReward","params":[["6dmNQ5jwLeLk5REvio1JcMshcbvkYMwy26sJ8pbkvStu","BGsqMegLpV6n6Ve146sSX2dTjUMj3M92HnU8BbNRMhF2"],{"epoch":800}]}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getInflationReward",
+    params: [
+      [
+        "6dmNQ5jwLeLk5REvio1JcMshcbvkYMwy26sJ8pbkvStu",
+        "BGsqMegLpV6n6Ve146sSX2dTjUMj3M92HnU8BbNRMhF2",
+      ],
+      { epoch: 800 },
+    ],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

@@ -1,0 +1,70 @@
+---
+title: "getTokenAccountBalance"
+description: "Returns the token balance of an SPL Token account."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getTokenAccountBalance",
+  "params": ["48gpnn8nsmkvkgso7462Z1nFhUrprGQ71u1YLBPzizbY"]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| pubkey | string | (required) Pubkey of the token account to query, as a base-58 encoded string. |
+| config | object | (optional) Configuration object containing `commitment` (string). |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "context": { "slot": 1114 },
+    "value": {
+      "amount": "9864",
+      "decimals": 2,
+      "uiAmount": 98.64,
+      "uiAmountString": "98.64"
+    }
+  }
+}
+```
+
+- `amount` - Raw token balance without decimals, as a string.
+- `decimals` - Number of base-10 digits to the right of the decimal place.
+- `uiAmount` - Token balance as a float, accounting for decimals.
+- `uiAmountString` - Token balance as a string, accounting for decimals.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getTokenAccountBalance","params":["48gpnn8nsmkvkgso7462Z1nFhUrprGQ71u1YLBPzizbY"]}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getTokenAccountBalance",
+    params: ["48gpnn8nsmkvkgso7462Z1nFhUrprGQ71u1YLBPzizbY"],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

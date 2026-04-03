@@ -1,0 +1,71 @@
+---
+title: "sendTransaction"
+description: "Submit a signed transaction to the cluster."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "sendTransaction",
+  "params": [
+    "SIGNED_TX_BASE64",
+    { "encoding": "base64", "skipPreflight": false }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter       | Type    | Description                                    |
+|-----------------|---------|------------------------------------------------|
+| transaction     | string  | Signed transaction, base-58 or base-64 encoded |
+| encoding        | string  | `base58` or `base64` (default: `base58`)       |
+| skipPreflight   | boolean | Skip preflight simulation (default: `false`)   |
+| preflightCommitment | string | Commitment for preflight (default: `finalized`) |
+| maxRetries      | number  | Max retries by the RPC node                    |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "5yGsRzg4..."
+}
+```
+
+`result` is the transaction signature (base-58).
+
+## Using SWQoS
+
+For better landing rates, use a SWQoS API key:
+
+```bash
+curl "https://rpc.solami.fast/sol?api_key=YOUR_SWQOS_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "sendTransaction",
+    "params": [
+      "SIGNED_TX_BASE64",
+      {"encoding": "base64", "skipPreflight": true, "maxRetries": 0}
+    ]
+  }'
+```
+
+<Tip>When using SWQoS, set `skipPreflight: true` and `maxRetries: 0` for optimal results.</Tip>
+
+## Rate Limits
+
+| Plan         | sendTransaction/s |
+|--------------|-------------------|
+| Free         | 1                 |
+| Dev          | 5                 |
+| Pro          | 20                |
+| Ultra        | 50                |
+| Shared Metal | 200               |

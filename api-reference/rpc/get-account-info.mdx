@@ -1,0 +1,91 @@
+---
+title: "getAccountInfo"
+description: "Returns all account data for a given public key."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getAccountInfo",
+  "params": [
+    "vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg",
+    {
+      "encoding": "base64"
+    }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| address | string | Base-58 encoded public key of the account to query. Required. |
+| config | object | Optional configuration object. |
+| config.commitment | string | Commitment level (`processed`, `confirmed`, `finalized`). |
+| config.encoding | string | Encoding for account data: `base58`, `base64`, `base64+zstd`, or `jsonParsed`. |
+| config.dataSlice | object | Limit returned data with `offset` (usize) and `length` (usize) fields. Only available for `base58`, `base64`, or `base64+zstd` encodings. |
+| config.minContextSlot | number | Minimum slot at which the request can be evaluated. |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "context": {
+      "slot": 341197053
+    },
+    "value": {
+      "data": ["", "base64"],
+      "executable": false,
+      "lamports": 88849814690250,
+      "owner": "11111111111111111111111111111111",
+      "rentEpoch": 18446744073709551615,
+      "space": 0
+    }
+  }
+}
+```
+
+The `value` field contains the account object with `data`, `executable`, `lamports`, `owner`, `rentEpoch`, and `space`. Returns `null` if the account is not found.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "getAccountInfo",
+    "params": [
+      "vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg",
+      {"encoding": "base64"}
+    ]
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getAccountInfo",
+    params: [
+      "vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg",
+      { encoding: "base64" },
+    ],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

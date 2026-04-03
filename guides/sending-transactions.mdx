@@ -1,0 +1,68 @@
+---
+title: "Sending Transactions"
+description: "Send transactions with optimal landing rates using SWQoS."
+---
+
+## Basic Transaction Sending
+
+Send a signed transaction using the standard `sendTransaction` RPC method:
+
+```javascript
+import { Connection, Transaction } from "@solana/web3.js";
+
+const connection = new Connection(
+  "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY"
+);
+
+const signature = await connection.sendTransaction(transaction, [payer]);
+```
+
+## Using SWQoS for Better Landing
+
+For higher landing rates, use a **SWQoS API key**. Transactions sent through SWQoS are routed via staked validators for priority processing.
+
+1. Create a SWQoS key in **Dashboard → API Keys**
+2. Use it as your RPC endpoint:
+
+```javascript
+const connection = new Connection(
+  "https://rpc.solami.fast/sol?api_key=YOUR_SWQOS_KEY"
+);
+
+const signature = await connection.sendTransaction(transaction, [payer], {
+  skipPreflight: true,
+  maxRetries: 0,
+});
+```
+
+<Tip>Set `skipPreflight: true` and `maxRetries: 0` when using SWQoS - the staked connection handles retry logic more effectively.</Tip>
+
+## Jito Bundles
+
+Solami supports Jito bundle simulation on all plans:
+
+```bash
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "simulateBundle",
+    "params": {
+      "encodedTransactions": ["BASE64_TX_1", "BASE64_TX_2"]
+    }
+  }'
+```
+
+## Rate Limits
+
+Transaction sending has separate rate limits from general RPC:
+
+| Plan         | sendTransaction/s |
+|--------------|-------------------|
+| Free         | 1                 |
+| Dev          | 5                 |
+| Pro          | 20                |
+| Ultra        | 50                |
+| Shared Metal | 200               |

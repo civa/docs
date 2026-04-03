@@ -1,0 +1,118 @@
+---
+title: "Authentication"
+description: "How to authenticate your requests to Solami."
+---
+
+All Solami endpoints require an API key. Create keys in the [Dashboard](https://solami.fast/dashboard/keys) and pass them as a query parameter.
+
+## API Key Types
+
+Each key type is scoped to a specific service:
+
+| Type       | Endpoint                          | Use Case                          |
+|------------|-----------------------------------|-----------------------------------|
+| RPC Key    | `rpc.solami.fast/sol`             | Solana JSON-RPC and WebSocket     |
+| gRPC Key   | `grpc.solami.fast`                | Yellowstone gRPC streaming        |
+| SWQoS Key  | `rpc.solami.fast/sol`             | Priority transaction landing      |
+
+## RPC
+
+```rust
+#![allow(deprecated)]
+use solana_sdk::pubkey::Pubkey;
+use std::str::FromStr;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let _ = dotenvy::dotenv();
+
+    let client = solami::from_env().build().await?;
+
+    let pubkey = Pubkey::from_str("11111111111111111111111111111111")?;
+    let balance = client.get_balance(&pubkey).await?;
+
+    let sol = balance as f64 / 1_000_000_000.0;
+    println!("Address: {pubkey}");
+    println!("Balance: {sol} SOL ({balance} lamports)");
+
+    Ok(())
+}
+```
+
+## gRPC
+
+```rust
+#![allow(deprecated)]
+use futures_util::StreamExt;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let _ = dotenvy::dotenv();
+
+    let mut client = solami::from_env().build().await?;
+
+    let request = solami::SubscriptionBuilder::new()
+        .slots("slot_sub", solami::SubscribeRequestFilterSlots {
+            filter_by_commitment: None,
+            interslot_updates: Some(false),
+        })
+        .build();
+
+    let (_sink, mut stream) = client.grpc().subscribe(request).await?;
+
+    println!("Subscribed to slot updates via gRPC...");
+
+    while let Some(Ok(msg)) = stream.next().await {
+        if let Some(solami::GrpcUpdateKind::Slot(slot)) = msg.update_oneof {
+            println!("Slot: {} | Parent: {:?} | Status: {:?}", slot.slot, slot.parent, slot.status);
+        }
+    }
+
+    Ok(())
+}
+```
+
+## SWQoS
+
+```rust
+#![allow(deprecated)]
+use solami::system_instruction;
+use solana_sdk::{pubkey::Pubkey, signer::{Signer, keypair::Keypair}, transaction::Transaction};
+use std::str::FromStr;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let _ = dotenvy::dotenv();
+
+    let client = solami::from_env().build_with_swqos().await?;
+    let payer = Keypair::from_base58_string(&std::env::var("SOLANA_KEYPAIR").unwrap());
+    let recipient = Pubkey::from_str("11111111111111111111111111111112")?;
+    let blockhash = client.get_latest_blockhash().await?;
+    let ix = system_instruction::transfer(&payer.pubkey(), &recipient, 1);
+    let tip_ix = solami::build_tip_ix(&payer.pubkey(), 0.0001);
+    let tx = Transaction::new_signed_with_payer(
+        &[ix, tip_ix],
+        Some(&payer.pubkey()),
+        &[&payer],
+        blockhash,
+    );
+    let sig = client.land_transaction(&tx.into()).await?;
+    println!("Transaction signature: {sig}");
+
+    Ok(())
+}
+```
+
+Set `SOLAMI_API_KEY` in your `.env` file. The SDK reads it automatically via `solami::from_env()`.
+
+## Rate Limits
+
+| Plan         | RPS  | sendTransaction/s |
+|--------------|------|--------------------|
+| Free         | 5    | 1                  |
+| Dev          | 50   | 5                  |
+| Pro          | 200  | 20                 |
+| Ultra        | 500  | 50                 |
+| Shared Metal | 2000 | 200                |
+
+Exceeding your rate limit returns HTTP 429.

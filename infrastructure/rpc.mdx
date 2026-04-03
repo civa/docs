@@ -1,0 +1,76 @@
+---
+title: "Solana RPCs"
+description: "High-performance, globally distributed RPC nodes with staked connections."
+---
+
+Solami provides Solana RPC access with low latency, high availability, and staked validator connections for reliable transaction landing.
+
+## Endpoint
+
+```
+https://rpc.solami.fast/sol?api_key=YOUR_API_KEY
+```
+
+## Features
+
+- Full Solana JSON-RPC spec support
+- Staked connections for priority transaction processing
+- Global distribution across multiple regions
+- < 5ms latency from co-located infrastructure
+- 99.99% uptime SLA
+
+## Usage
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "getBalance",
+    "params": ["YOUR_WALLET_ADDRESS"]
+  }'
+```
+
+```javascript JavaScript
+import { Connection } from "@solana/web3.js";
+
+const connection = new Connection(
+  "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY"
+);
+
+const balance = await connection.getBalance(publicKey);
+```
+
+```python Python
+from solana.rpc.api import Client
+
+client = Client("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY")
+balance = client.get_balance(pubkey)
+```
+</CodeGroup>
+
+## Rate Limits
+
+| Plan         | Requests/sec | sendTransaction/sec |
+|--------------|-------------|---------------------|
+| Free         | 5           | 1                   |
+| Dev          | 50          | 5                   |
+| Pro          | 200         | 20                  |
+| Ultra        | 500         | 50                  |
+| Shared Metal | 2,000       | 200                 |
+
+## Supported Methods
+
+All standard Solana JSON-RPC methods are supported, including:
+
+- `getBalance`, `getAccountInfo`, `getMultipleAccounts`
+- `getTransaction`, `getSignaturesForAddress`
+- `sendTransaction`, `simulateTransaction`
+- `getSlot`, `getBlockHeight`, `getLatestBlockhash`
+- `getTokenAccountsByOwner`, `getTokenSupply`
+- Jito bundle simulation
+
+See the [RPC Methods](/api-reference/introduction) reference for the full method list.

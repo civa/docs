@@ -1,0 +1,63 @@
+---
+title: "getBlockTime"
+description: "Returns the estimated production time of a block."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getBlockTime",
+  "params": [377268280]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| slot | u64 | Slot number to query the block time for (required) |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": 1574721591
+}
+```
+
+- `result` - Estimated production time as an i64 Unix timestamp in seconds, or `null` if the timestamp is not available for this block.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "getBlockTime",
+    "params": [377268280]
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getBlockTime",
+    params: [377268280],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

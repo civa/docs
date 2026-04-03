@@ -1,0 +1,71 @@
+---
+title: "getTransactionCount"
+description: "Returns the total number of transactions processed by the cluster."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getTransactionCount",
+  "params": [
+    {
+      "commitment": "finalized"
+    }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| config | object | Optional configuration object. |
+| config.commitment | string | Commitment level. |
+| config.minContextSlot | u64 | Minimum slot for request evaluation. |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": 268
+}
+```
+
+The `result` is a `u64` representing the total transaction count.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "getTransactionCount",
+    "params": [
+      {"commitment": "finalized"}
+    ]
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getTransactionCount",
+    params: [{ commitment: "finalized" }],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

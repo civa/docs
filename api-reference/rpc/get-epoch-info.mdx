@@ -1,0 +1,73 @@
+---
+title: "getEpochInfo"
+description: "Returns information about the current epoch."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getEpochInfo",
+  "params": [
+    {
+      "commitment": "finalized",
+      "minContextSlot": 1000
+    }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `commitment` | string (optional) | Commitment level: `processed`, `confirmed`, or `finalized` |
+| `minContextSlot` | u64 (optional) | Minimum slot that the request can be evaluated at |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "absoluteSlot": 166598317,
+    "blockHeight": 150448256,
+    "epoch": 385,
+    "slotIndex": 123317,
+    "slotsInEpoch": 432000,
+    "transactionCount": 138904537441
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `absoluteSlot` | u64 | Current slot |
+| `blockHeight` | u64 | Current block height |
+| `epoch` | u64 | Current epoch |
+| `slotIndex` | u64 | Current slot relative to the start of the epoch |
+| `slotsInEpoch` | u64 | Number of slots in this epoch |
+| `transactionCount` | u64 \| null | Total number of transactions processed |
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getEpochInfo"}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({"jsonrpc":"2.0","id":1,"method":"getEpochInfo"}),
+});
+const data = await response.json();
+```
+</CodeGroup>

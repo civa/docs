@@ -1,0 +1,72 @@
+---
+title: "requestAirdrop"
+description: "Requests an airdrop of lamports to a public key."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "requestAirdrop",
+  "params": [
+    "83astBRguLMdt2h5U1Tpdq5tjFoJ6noeGwaY3mDLVcri",
+    1000000000
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| pubkey | string | Base-58 encoded public key of the account to receive lamports. Required. |
+| lamports | u64 | Amount of lamports to airdrop. Required. |
+| config | object | Optional configuration object. |
+| config.commitment | string | Commitment level. |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "4cdd1oX7cfVALfr26tP52BZ6cSzrgnNGtYD7BFhm6FFeZV5sPTnRvg6NRn8yC6DbEikXcrNChBM5vVJnTgKhGhVu"
+}
+```
+
+The `result` is a string containing the transaction signature of the airdrop.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "requestAirdrop",
+    "params": [
+      "83astBRguLMdt2h5U1Tpdq5tjFoJ6noeGwaY3mDLVcri",
+      1000000000
+    ]
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "requestAirdrop",
+    params: ["83astBRguLMdt2h5U1Tpdq5tjFoJ6noeGwaY3mDLVcri", 1000000000],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

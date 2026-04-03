@@ -1,0 +1,93 @@
+---
+title: "getVoteAccounts"
+description: "Returns the account info and associated stake for all voting accounts in the current bank."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getVoteAccounts",
+  "params": [
+    {
+      "commitment": "finalized",
+      "votePubkey": "3ZT31jkAGhUaw8jsy4bTknwBkNiDgx3PFnkQE5h7RLRN",
+      "keepUnstakedDelinquents": false,
+      "delinquentSlotDistance": 128
+    }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `commitment` | string (optional) | Commitment level: `processed`, `confirmed`, or `finalized` |
+| `votePubkey` | string (optional) | Only return results for this vote account pubkey (base-58 encoded) |
+| `keepUnstakedDelinquents` | bool (optional) | Do not filter out delinquent validators with no stake |
+| `delinquentSlotDistance` | u64 (optional) | Number of slots behind the tip that a validator must fall to be considered delinquent (default: 128) |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "current": [
+      {
+        "activatedStake": 42,
+        "commission": 0,
+        "epochCredits": [[1, 64, 0], [2, 192, 64]],
+        "epochVoteAccount": true,
+        "lastVote": 147,
+        "nodePubkey": "B97CCUW3AEZFGy6uUg6zUdnNYvnVq5VG8PUtb2HB2eN",
+        "rootSlot": 146,
+        "votePubkey": "3ZT31jkAGhUaw8jsy4bTknwBkNiDgx3PFnkQE5h7RLRN"
+      }
+    ],
+    "delinquent": []
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `current` | array | Currently active vote accounts |
+| `delinquent` | array | Delinquent vote accounts |
+
+Each vote account object contains:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `activatedStake` | u64 | Stake in lamports delegated to this vote account |
+| `commission` | u8 | Percentage (0-100) of rewards payout owed to the vote account |
+| `epochCredits` | array | Latest history of earned credits for up to five epochs as `[epoch, credits, previousCredits]` |
+| `epochVoteAccount` | bool | Whether the vote account is staked for this epoch |
+| `lastVote` | u64 | Most recent slot voted on by this vote account |
+| `nodePubkey` | string | Validator identity (base-58 encoded) |
+| `rootSlot` | u64 | Current root slot for this vote account |
+| `votePubkey` | string | Vote account address (base-58 encoded) |
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getVoteAccounts"}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({"jsonrpc":"2.0","id":1,"method":"getVoteAccounts"}),
+});
+const data = await response.json();
+```
+</CodeGroup>

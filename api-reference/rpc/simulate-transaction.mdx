@@ -1,0 +1,95 @@
+---
+title: "simulateTransaction"
+description: "Simulates a transaction without broadcasting it."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "simulateTransaction",
+  "params": [
+    "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAEEjNmKi...",
+    {
+      "encoding": "base64",
+      "replaceRecentBlockhash": true
+    }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| transaction | string | Encoded transaction to simulate. Required. |
+| config | object | Optional configuration object. |
+| config.commitment | string | Commitment level. |
+| config.encoding | string | Encoding of the transaction (e.g. `base64`). |
+| config.sigVerify | boolean | Verify transaction signatures. |
+| config.replaceRecentBlockhash | boolean | Replace the transaction's recent blockhash with the latest one. |
+| config.minContextSlot | u64 | Minimum slot for request evaluation. |
+| config.innerInstructions | boolean | Include inner instructions in the response. |
+| config.accounts | object | Accounts configuration for the simulation. |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "context": {
+      "slot": 393226680
+    },
+    "value": {
+      "err": null,
+      "logs": [
+        "Program 11111111111111111111111111111111 invoke [1]",
+        "Program 11111111111111111111111111111111 success"
+      ],
+      "unitsConsumed": 1714
+    }
+  }
+}
+```
+
+The `value` object contains `err` (object or null), `logs` (array of strings), `unitsConsumed` (u64), and optionally `returnData` (object).
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "simulateTransaction",
+    "params": [
+      "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAEEjNmKi...",
+      {"encoding": "base64", "replaceRecentBlockhash": true}
+    ]
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "simulateTransaction",
+    params: [
+      "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAEEjNmKi...",
+      { encoding: "base64", replaceRecentBlockhash: true }
+    ],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

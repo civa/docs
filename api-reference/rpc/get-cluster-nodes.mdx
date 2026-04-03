@@ -1,0 +1,72 @@
+---
+title: "getClusterNodes"
+description: "Returns information about all the nodes participating in the cluster."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getClusterNodes"
+}
+```
+
+### Parameters
+
+None.
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": [
+    {
+      "pubkey": "9QzsJf7LPLj8GkXbYT3LFDKqE2CT7c3sMiUpeaeNJunz",
+      "gossip": "10.239.6.48:8001",
+      "rpc": "10.239.6.48:8899",
+      "tpu": "10.239.6.48:8856",
+      "tpuQuic": "10.239.6.48:8010",
+      "version": "1.18.0",
+      "featureSet": 4215938412,
+      "shredVersion": 50093
+    }
+  ]
+}
+```
+
+Each element in the result array contains:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `pubkey` | string | Node's public key (base-58 encoded) |
+| `gossip` | string \| null | Gossip network address |
+| `rpc` | string \| null | JSON RPC network address |
+| `tpu` | string \| null | TPU network address |
+| `tpuQuic` | string \| null | TPU QUIC network address |
+| `version` | string \| null | Software version of the node |
+| `featureSet` | u32 \| null | Unique identifier of the node's feature set |
+| `shredVersion` | u16 | Shred version the node is configured to use |
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getClusterNodes"}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({"jsonrpc":"2.0","id":1,"method":"getClusterNodes"}),
+});
+const data = await response.json();
+```
+</CodeGroup>

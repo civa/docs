@@ -1,0 +1,43 @@
+---
+title: "Usage"
+description: "View your RPC usage statistics."
+---
+
+## Get RPC Stats
+
+```
+GET /auth/usage/rpc-stats?from={timestamp}&to={timestamp}
+```
+
+### Parameters
+
+| Parameter | Type   | Description                    |
+|-----------|--------|--------------------------------|
+| from      | number | Start timestamp (Unix seconds) |
+| to        | number | End timestamp (Unix seconds)   |
+
+Both parameters are optional. Defaults to the last 24 hours.
+
+### Response
+
+```json
+{
+  "methods": [
+    {
+      "method": "getBalance",
+      "count": 15234,
+      "errors": 12
+    },
+    {
+      "method": "sendTransaction",
+      "count": 892,
+      "errors": 3
+    }
+  ],
+  "total": 16126,
+  "from": 1700000000,
+  "to": 1700086400
+}
+```
+
+View usage stats visually in the [Dashboard](https://solami.fast/dashboard/usage).

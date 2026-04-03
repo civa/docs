@@ -1,0 +1,65 @@
+---
+title: "getLeaderSchedule"
+description: "Returns the leader schedule for an epoch."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getLeaderSchedule",
+  "params": [
+    null,
+    {
+      "commitment": "finalized",
+      "identity": "4Qkev8aNZcqFNSRhQzwyLMFSsi94jHqE8WNVTJzTP99F"
+    }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `slot` | u64 (optional) | Fetch the leader schedule for the epoch that corresponds to this slot. Defaults to current epoch if `null` |
+| `commitment` | string (optional) | Commitment level: `processed`, `confirmed`, or `finalized` |
+| `identity` | string (optional) | Only return the schedule for this validator identity (base-58 encoded) |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "4Qkev8aNZcqFNSRhQzwyLMFSsi94jHqE8WNVTJzTP99F": [0, 1, 2, 3, 4]
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `result` | object \| null | A mapping of validator identity pubkeys to arrays of slot indices relative to the first slot in the epoch, or `null` if requested epoch is not found |
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getLeaderSchedule"}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({"jsonrpc":"2.0","id":1,"method":"getLeaderSchedule"}),
+});
+const data = await response.json();
+```
+</CodeGroup>

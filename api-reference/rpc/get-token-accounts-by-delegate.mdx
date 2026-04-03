@@ -1,0 +1,108 @@
+---
+title: "getTokenAccountsByDelegate"
+description: "Returns SPL Token accounts approved for a given delegate."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getTokenAccountsByDelegate",
+  "params": [
+    "9mMBg1qaUaQdht6Q7r5T5VirRzJbNAyquKTq96FyR4UC",
+    { "mint": "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr" },
+    { "encoding": "jsonParsed" }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| pubkey | string | (required) Pubkey of the delegate account to query, as a base-58 encoded string. |
+| filter | object | (required) Filter by `mint` (string) or `programId` (string). |
+| config | object | (optional) Configuration object containing `commitment` (string), `encoding` (string), `dataSlice` (object), `minContextSlot` (number). |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "context": { "slot": 1114 },
+    "value": [
+      {
+        "pubkey": "28YTZEwqtMHWrhWcvv34se7pjS7wctgqzCPB3gReCFKy",
+        "account": {
+          "lamports": 1726080,
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "data": {
+            "program": "spl-token",
+            "parsed": {
+              "info": {
+                "tokenAmount": {
+                  "amount": "1",
+                  "decimals": 1,
+                  "uiAmount": 0.1,
+                  "uiAmountString": "0.1"
+                },
+                "delegate": "9mMBg1qaUaQdht6Q7r5T5VirRzJbNAyquKTq96FyR4UC",
+                "delegatedAmount": {
+                  "amount": "1",
+                  "decimals": 1,
+                  "uiAmount": 0.1,
+                  "uiAmountString": "0.1"
+                },
+                "mint": "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr",
+                "owner": "4Nd1mLfhSEhWSN6sCzuPVjJfWifJTtiKJkUBADesAt7q",
+                "state": "initialized"
+              },
+              "type": "account"
+            }
+          },
+          "executable": false,
+          "rentEpoch": 0
+        }
+      }
+    ]
+  }
+}
+```
+
+- `pubkey` - Pubkey of the token account.
+- `account.data.parsed.info.tokenAmount` - Total token balance of the account.
+- `account.data.parsed.info.delegate` - The approved delegate address.
+- `account.data.parsed.info.delegatedAmount` - Amount delegated to the delegate.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getTokenAccountsByDelegate","params":["9mMBg1qaUaQdht6Q7r5T5VirRzJbNAyquKTq96FyR4UC",{"mint":"Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr"},{"encoding":"jsonParsed"}]}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getTokenAccountsByDelegate",
+    params: [
+      "9mMBg1qaUaQdht6Q7r5T5VirRzJbNAyquKTq96FyR4UC",
+      { mint: "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr" },
+      { encoding: "jsonParsed" },
+    ],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

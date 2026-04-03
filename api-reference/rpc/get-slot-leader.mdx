@@ -1,0 +1,61 @@
+---
+title: "getSlotLeader"
+description: "Returns the current slot leader."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getSlotLeader",
+  "params": [
+    {
+      "commitment": "finalized",
+      "minContextSlot": 1000
+    }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `commitment` | string (optional) | Commitment level: `processed`, `confirmed`, or `finalized` |
+| `minContextSlot` | u64 (optional) | Minimum slot that the request can be evaluated at |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "ENvAW7JScgYq6o4zKZwewtkzzJgDzuJAFxYasvmEQdpS"
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `result` | string | The current slot leader's pubkey (base-58 encoded) |
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getSlotLeader"}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({"jsonrpc":"2.0","id":1,"method":"getSlotLeader"}),
+});
+const data = await response.json();
+```
+</CodeGroup>

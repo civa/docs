@@ -1,0 +1,90 @@
+---
+title: "getSignatureStatuses"
+description: "Returns the status of transaction signatures."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getSignatureStatuses",
+  "params": [
+    [
+      "4cdd1oX7cfVALfr26tP52BZ6cSzrgnNGtYD7BFhm6FFeZV5sPTnRvg6NRn8yC6DbEikXcrNChBM5vVJnTgKhGhVu"
+    ],
+    {
+      "searchTransactionHistory": true
+    }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| signatures | array | Array of base-58 encoded transaction signatures. Required. Up to 256. |
+| config | object | Optional configuration object. |
+| config.searchTransactionHistory | boolean | Search transaction history for signatures not found in recent status cache. |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "context": {
+      "slot": 82
+    },
+    "value": [
+      {
+        "slot": 48,
+        "confirmations": null,
+        "err": null,
+        "confirmationStatus": "finalized"
+      }
+    ]
+  }
+}
+```
+
+The `value` array contains objects with `slot` (u64), `confirmations` (u64 or null if finalized), `err` (object or null), and `confirmationStatus` (string). An entry may be `null` if the signature is not known.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "getSignatureStatuses",
+    "params": [
+      ["4cdd1oX7cfVALfr26tP52BZ6cSzrgnNGtYD7BFhm6FFeZV5sPTnRvg6NRn8yC6DbEikXcrNChBM5vVJnTgKhGhVu"],
+      {"searchTransactionHistory": true}
+    ]
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getSignatureStatuses",
+    params: [
+      ["4cdd1oX7cfVALfr26tP52BZ6cSzrgnNGtYD7BFhm6FFeZV5sPTnRvg6NRn8yC6DbEikXcrNChBM5vVJnTgKhGhVu"],
+      { searchTransactionHistory: true }
+    ],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

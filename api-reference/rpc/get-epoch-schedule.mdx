@@ -1,0 +1,62 @@
+---
+title: "getEpochSchedule"
+description: "Returns the epoch schedule parameters from the cluster's genesis config."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getEpochSchedule"
+}
+```
+
+### Parameters
+
+None.
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "firstNormalEpoch": 8,
+    "firstNormalSlot": 8160,
+    "leaderScheduleSlotOffset": 432000,
+    "slotsPerEpoch": 432000,
+    "warmup": true
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `firstNormalEpoch` | u64 | First normal-length epoch (after warmup) |
+| `firstNormalSlot` | u64 | First slot of the first normal epoch |
+| `leaderScheduleSlotOffset` | u64 | Number of slots before an epoch starts to calculate the leader schedule |
+| `slotsPerEpoch` | u64 | Number of slots per epoch |
+| `warmup` | bool | Whether epochs start short and grow |
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getEpochSchedule"}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({"jsonrpc":"2.0","id":1,"method":"getEpochSchedule"}),
+});
+const data = await response.json();
+```
+</CodeGroup>

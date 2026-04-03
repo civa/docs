@@ -1,0 +1,62 @@
+---
+title: "getStakeMinimumDelegation"
+description: "Returns the minimum stake delegation in lamports."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getStakeMinimumDelegation"
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| config | object | (Optional) Configuration object with `commitment` field. |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "context": {
+      "slot": 501
+    },
+    "value": 1000000000
+  },
+  "id": 1
+}
+```
+
+- `context.slot` - The slot at which the data was fetched.
+- `value` - Minimum delegation in lamports (u64).
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getStakeMinimumDelegation"}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getStakeMinimumDelegation",
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

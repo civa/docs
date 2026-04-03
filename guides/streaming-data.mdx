@@ -1,0 +1,109 @@
+---
+title: "Streaming Data"
+description: "Real-time Solana data via gRPC and WebSocket."
+---
+
+Solami offers two streaming options depending on your needs.
+
+## gRPC (Yellowstone)
+
+Best for high-throughput, filtered data streams. Available on Pro plan and above.
+
+```
+https://grpc.solami.fast?api_key=YOUR_API_KEY
+```
+
+### When to use gRPC
+
+- Streaming all transactions for a specific program
+- Monitoring multiple accounts simultaneously
+- High-frequency trading data
+- Block-level data processing
+
+### Example: Subscribe to Transactions
+
+```rust
+#![allow(deprecated)]
+use futures_util::StreamExt;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let _ = dotenvy::dotenv();
+
+    let mut client = solami::from_env().build().await?;
+
+    let accounts = vec![
+        "11111111111111111111111111111111".to_string(),
+    ];
+
+    let (_sink, mut stream) = client.grpc().subscribe_transactions(
+        "tx_sub",
+        accounts,
+        solami::CommitmentLevel::Confirmed,
+    ).await?;
+
+    println!("Subscribed to transactions via gRPC...");
+
+    while let Some(Ok(msg)) = stream.next().await {
+        if let Some(solami::GrpcUpdateKind::Transaction(tx)) = msg.update_oneof {
+            if let Some(info) = tx.transaction {
+                println!("Signature: {:?} | Slot: {}", info.signature, tx.slot);
+            }
+        }
+    }
+
+    Ok(())
+}
+```
+
+## WebSocket
+
+Best for lightweight subscriptions. Available on Dev plan and above.
+
+```
+wss://rpc.solami.fast/ws/sol?api_key=YOUR_API_KEY
+```
+
+### When to use WebSocket
+
+- Monitoring a single account balance
+- Watching for transaction confirmations
+- Slot/root notifications
+- Lighter workloads with fewer subscriptions
+
+### Example: Account Subscribe
+
+```javascript
+const ws = new WebSocket(
+  "wss://rpc.solami.fast/ws/sol?api_key=YOUR_API_KEY"
+);
+
+ws.onopen = () => {
+  ws.send(JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "accountSubscribe",
+    params: [
+      "ACCOUNT_ADDRESS",
+      { encoding: "jsonParsed", commitment: "confirmed" }
+    ],
+  }));
+};
+
+ws.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  if (data.method === "accountNotification") {
+    console.log("Account changed:", data.params.result);
+  }
+};
+```
+
+## Comparison
+
+| Feature          | gRPC                  | WebSocket            |
+|------------------|-----------------------|----------------------|
+| Protocol         | Yellowstone gRPC      | JSON-RPC over WS     |
+| Min Plan         | Pro ($99/mo)          | Dev ($49/mo)         |
+| Throughput       | High                  | Moderate             |
+| Filtering        | Advanced              | Basic                |
+| Best for         | Production streaming  | Simple subscriptions |

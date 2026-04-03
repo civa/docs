@@ -1,0 +1,58 @@
+---
+title: "WebSocket"
+description: "Subscribe to real-time Solana updates over WebSocket."
+---
+
+Use Solami's WebSocket endpoint to subscribe to real-time account changes, program updates, and slot notifications.
+
+## Endpoint
+
+```
+wss://rpc.solami.fast/ws/sol?api_key=YOUR_API_KEY
+```
+
+## Connection Limits
+
+| Plan         | WebSocket Connections |
+|--------------|-----------------------|
+| Free         | 0                     |
+| Dev          | 2                     |
+| Pro          | 5                     |
+| Ultra        | 10                    |
+| Shared Metal | 30                    |
+
+## Subscription Methods
+
+- `accountSubscribe` / `accountUnsubscribe`
+- `programSubscribe` / `programUnsubscribe`
+- `slotSubscribe` / `slotUnsubscribe`
+- `signatureSubscribe` / `signatureUnsubscribe`
+- `logsSubscribe` / `logsUnsubscribe`
+- `rootSubscribe` / `rootUnsubscribe`
+
+## Usage
+
+```javascript
+import ReconnectingWebSocket from "reconnecting-websocket";
+
+const ws = new ReconnectingWebSocket(
+  "wss://rpc.solami.fast/ws/sol?api_key=YOUR_API_KEY"
+);
+
+ws.onopen = () => {
+  ws.send(JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "accountSubscribe",
+    params: [
+      "ACCOUNT_ADDRESS",
+      { encoding: "jsonParsed", commitment: "confirmed" }
+    ],
+  }));
+};
+
+ws.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  console.log("Update:", data);
+};
+```

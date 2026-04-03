@@ -1,0 +1,82 @@
+---
+title: "isBlockhashValid"
+description: "Returns whether a blockhash is still valid."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "isBlockhashValid",
+  "params": [
+    "J7rBdM6AecPDEZp8aPq5iPSNKVkU5Q76F3oAV4eW5wsW",
+    {
+      "commitment": "processed"
+    }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| blockhash | string | Base-58 encoded blockhash to check. Required. |
+| config | object | Optional configuration object. |
+| config.commitment | string | Commitment level. |
+| config.minContextSlot | u64 | Minimum slot for request evaluation. |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "context": {
+      "slot": 2483
+    },
+    "value": false
+  }
+}
+```
+
+The `value` field is a boolean indicating whether the blockhash is still valid.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "isBlockhashValid",
+    "params": [
+      "J7rBdM6AecPDEZp8aPq5iPSNKVkU5Q76F3oAV4eW5wsW",
+      {"commitment": "processed"}
+    ]
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "isBlockhashValid",
+    params: [
+      "J7rBdM6AecPDEZp8aPq5iPSNKVkU5Q76F3oAV4eW5wsW",
+      { commitment: "processed" }
+    ],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

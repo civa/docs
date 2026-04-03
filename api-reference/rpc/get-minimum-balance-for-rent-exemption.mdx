@@ -1,0 +1,65 @@
+---
+title: "getMinimumBalanceForRentExemption"
+description: "Returns the minimum lamports required for an account of a given size to be rent exempt."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getMinimumBalanceForRentExemption",
+  "params": [50]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| length | usize | Account data length in bytes. Required. |
+| config | object | Optional configuration object. |
+| config.commitment | string | Commitment level (`processed`, `confirmed`, `finalized`). |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": 1113600
+}
+```
+
+The `result` field contains a `u64` value representing the minimum lamports required for rent exemption.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "getMinimumBalanceForRentExemption",
+    "params": [50]
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getMinimumBalanceForRentExemption",
+    params: [50],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

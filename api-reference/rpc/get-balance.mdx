@@ -1,0 +1,65 @@
+---
+title: "getBalance"
+description: "Returns the lamport balance of an account."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getBalance",
+  "params": ["ACCOUNT_ADDRESS"]
+}
+```
+
+### Parameters
+
+| Parameter | Type   | Description                          |
+|-----------|--------|--------------------------------------|
+| address   | string | Base-58 encoded public key of account |
+| config    | object | (Optional) `{commitment: string}`    |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "context": { "slot": 123456789 },
+    "value": 1000000000
+  }
+}
+```
+
+`value` is the balance in lamports (1 SOL = 1,000,000,000 lamports).
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "getBalance",
+    "params": ["83astBRguLMdt2h5U1Tbd1hAV3DsGk2LPkhoj6EMAM"]
+  }'
+```
+
+```javascript JavaScript
+import { Connection, PublicKey } from "@solana/web3.js";
+
+const connection = new Connection(
+  "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY"
+);
+const balance = await connection.getBalance(
+  new PublicKey("83astBRguLMdt2h5U1Tbd1hAV3DsGk2LPkhoj6EMAM")
+);
+console.log(`Balance: ${balance / 1e9} SOL`);
+```
+</CodeGroup>

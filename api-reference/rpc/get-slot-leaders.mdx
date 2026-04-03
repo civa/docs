@@ -1,0 +1,60 @@
+---
+title: "getSlotLeaders"
+description: "Returns the slot leaders for a given slot range."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getSlotLeaders",
+  "params": [100, 10]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `startSlot` | u64 (required) | Start slot |
+| `limit` | u64 (required) | Number of leaders to return (between 1 and 5000) |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": [
+    "ChorusmmC7i2ASTvJNqfRahXwEGVbY96bHyCvkeYMaoz",
+    "ENvAW7JScgYq6o4zKZwewtkzzJgDzuJAFxYasvmEQdpS",
+    "node3kVEH4JMkVun5tBNrBELHndDP2fRLjJkkgeqH4Lf"
+  ]
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `result` | array\<string\> | Array of pubkeys (base-58 encoded) representing the slot leaders for the requested range |
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getSlotLeaders","params":[100,10]}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({"jsonrpc":"2.0","id":1,"method":"getSlotLeaders","params":[100,10]}),
+});
+const data = await response.json();
+```
+</CodeGroup>

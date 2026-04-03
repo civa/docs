@@ -1,0 +1,88 @@
+---
+title: "gRPC Streams"
+description: "Real-time Solana data via Yellowstone gRPC with zero missed events."
+---
+
+Stream real-time Solana blocks, transactions, and account updates via Yellowstone gRPC. Zero missed data, sub-second latency.
+
+## Endpoint
+
+```
+https://grpc.solami.fast?api_key=YOUR_API_KEY
+```
+
+## Features
+
+- Yellowstone gRPC protocol
+- Subscribe to accounts, transactions, blocks, and slots
+- Filter by program, account, or transaction type
+- Zero missed events with reliable delivery
+- Available on Pro plan and above
+
+## Subscription Types
+
+| Type         | Description                                      |
+|-------------|--------------------------------------------------|
+| Account     | Real-time account data changes                    |
+| Transaction | Filtered transaction streams                      |
+| Block       | Full block data as confirmed                      |
+| Slot        | Slot progression updates                          |
+
+## Pricing
+
+gRPC connections are included in your plan:
+
+| Plan         | Included Connections |
+|--------------|---------------------|
+| Free         | 0                   |
+| Dev          | 0                   |
+| Pro          | 1                   |
+| Ultra        | 5                   |
+| Shared Metal | 10                  |
+
+### Extra Connections
+
+Need more? Purchase additional connections:
+
+| Period  | Price per Connection |
+|---------|---------------------|
+| Daily   | $10/day             |
+| Monthly | $100/month          |
+
+Up to 100 extra connections can be added from the [Dashboard](https://solami.fast/dashboard/grpc).
+
+## Usage Example
+
+```rust
+#![allow(deprecated)]
+use futures_util::StreamExt;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let _ = dotenvy::dotenv();
+
+    let mut client = solami::from_env().build().await?;
+
+    let accounts = vec![
+        "11111111111111111111111111111111".to_string(),
+    ];
+
+    let (_sink, mut stream) = client.grpc().subscribe_transactions(
+        "tx_sub",
+        accounts,
+        solami::CommitmentLevel::Confirmed,
+    ).await?;
+
+    println!("Subscribed to transactions via gRPC...");
+
+    while let Some(Ok(msg)) = stream.next().await {
+        if let Some(solami::GrpcUpdateKind::Transaction(tx)) = msg.update_oneof {
+            if let Some(info) = tx.transaction {
+                println!("Signature: {:?} | Slot: {}", info.signature, tx.slot);
+            }
+        }
+    }
+
+    Ok(())
+}
+```

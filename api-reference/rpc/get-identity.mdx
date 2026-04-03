@@ -1,0 +1,54 @@
+---
+title: "getIdentity"
+description: "Returns the identity pubkey for the current node."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getIdentity"
+}
+```
+
+### Parameters
+
+None.
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "identity": "2r1F4iWqVcb8M1DbAjQuFpebkQHY9hcVU4WuW2DJBppN"
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `identity` | string | The identity pubkey of the current node (base-58 encoded) |
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getIdentity"}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({"jsonrpc":"2.0","id":1,"method":"getIdentity"}),
+});
+const data = await response.json();
+```
+</CodeGroup>

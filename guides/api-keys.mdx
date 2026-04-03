@@ -1,0 +1,45 @@
+---
+title: "API Keys"
+description: "Create and manage your Solami API keys."
+---
+
+## Key Types
+
+| Type      | Purpose                                     |
+|-----------|---------------------------------------------|
+| RPC Key   | RPC, WebSocket, and REST API access         |
+| gRPC Key  | gRPC streaming connections                  |
+| SWQoS Key | Stake-weighted QoS transaction sending      |
+| API Key   | General API access                          |
+
+## Creating a Key
+
+1. Go to [Dashboard → API Keys](https://solami.fast/dashboard/keys)
+2. Click **Create Key**
+3. Enter a label and select the key type
+4. Copy and store your key securely
+
+<Warning>API keys are shown only once at creation. Store them securely - you cannot retrieve a key after dismissing the creation dialog.</Warning>
+
+## Using Your Key
+
+Pass the key as a query parameter or authorization header:
+
+```bash
+# Query parameter
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" ...
+
+# Authorization header
+curl https://rpc.solami.fast/sol \
+  -H "Authorization: Bearer YOUR_API_KEY" ...
+```
+
+## Revoking Keys
+
+Revoke a key from the API Keys dashboard. Revoked keys stop working immediately.
+
+## Best Practices
+
+- Use separate keys for different applications
+- Rotate keys periodically
+- Never commit keys to source control

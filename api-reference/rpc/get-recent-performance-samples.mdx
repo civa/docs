@@ -1,0 +1,82 @@
+---
+title: "getRecentPerformanceSamples"
+description: "Returns recent 60-second performance samples."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getRecentPerformanceSamples",
+  "params": [2]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| limit | usize | Number of samples to return (optional, max 720) |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": [
+    {
+      "slot": 378967300,
+      "numTransactions": 4200,
+      "numSlots": 150,
+      "samplePeriodSecs": 60,
+      "numNonVoteTransactions": 1050
+    },
+    {
+      "slot": 378967150,
+      "numTransactions": 3900,
+      "numSlots": 148,
+      "samplePeriodSecs": 60,
+      "numNonVoteTransactions": 980
+    }
+  ]
+}
+```
+
+- `slot` - Slot number at the end of the sample window.
+- `numTransactions` - Total number of transactions during the sample period.
+- `numSlots` - Number of slots completed during the sample period.
+- `samplePeriodSecs` - Duration of the sample window in seconds.
+- `numNonVoteTransactions` - Number of non-vote transactions during the sample period.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "getRecentPerformanceSamples",
+    "params": [2]
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getRecentPerformanceSamples",
+    params: [2],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

@@ -1,0 +1,89 @@
+---
+title: "getSignaturesForAddress"
+description: "Returns confirmed signatures for transactions involving an address."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getSignaturesForAddress",
+  "params": [
+    "Vote111111111111111111111111111111111111111",
+    {
+      "limit": 1
+    }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| address | string | Base-58 encoded account address. Required. |
+| config | object | Optional configuration object. |
+| config.commitment | string | Commitment level. |
+| config.limit | u32 | Maximum number of signatures to return (1-1000, default 1000). |
+| config.before | string | Start searching backwards from this transaction signature. |
+| config.until | string | Search until this transaction signature. |
+| config.minContextSlot | u64 | Minimum slot for request evaluation. |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": [
+    {
+      "signature": "5h6xBEauJ3PK6SWCZ1PGjBvj8vDdWG3KpwATGy1ARAXFSDwt8GFXM7W5Ncn16wmqokgpiKRLuS83KUxyZyv2sUYv",
+      "slot": 114,
+      "err": null,
+      "memo": null,
+      "blockTime": null,
+      "confirmationStatus": "finalized"
+    }
+  ]
+}
+```
+
+Returns an array of objects containing `signature` (string), `slot` (u64), `err` (object or null), `memo` (string or null), `blockTime` (i64 or null), and `confirmationStatus` (string).
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "getSignaturesForAddress",
+    "params": [
+      "Vote111111111111111111111111111111111111111",
+      {"limit": 1}
+    ]
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getSignaturesForAddress",
+    params: [
+      "Vote111111111111111111111111111111111111111",
+      { limit: 1 }
+    ],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

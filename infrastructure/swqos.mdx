@@ -1,0 +1,57 @@
+---
+title: "SWQoS"
+description: "Stake-weighted quality of service for priority transaction processing."
+---
+
+Stake-Weighted Quality of Service (SWQoS) routes your transactions through staked validators, giving them priority processing and significantly better landing rates.
+
+## How It Works
+
+1. Your transaction is sent through Solami's staked validator connections
+2. Validators prioritize transactions from staked peers
+3. Higher landing rates and faster confirmation times
+
+## Benefits
+
+- **Better Landing Rates** - transactions are prioritized by validators
+- **Faster Confirmations** - reduced time to finality
+- **Tip Revenue Share** - earn up to 6% from SWQoS tip revenue
+
+## Usage
+
+Create a SWQoS key in **Dashboard → API Keys → Create Key → SWQoS Key**.
+
+```rust
+#![allow(deprecated)]
+use solami::system_instruction;
+use solana_sdk::{pubkey::Pubkey, signer::{Signer, keypair::Keypair}, transaction::Transaction};
+use std::str::FromStr;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let _ = dotenvy::dotenv();
+
+    let client = solami::from_env().build_with_swqos().await?;
+    let payer = Keypair::from_base58_string(&std::env::var("SOLANA_KEYPAIR").unwrap());
+    let recipient = Pubkey::from_str("11111111111111111111111111111112")?;
+    println!("Payer: {}", payer.pubkey());
+    println!("Recipient: {recipient}");
+    let blockhash = client.get_latest_blockhash().await?;
+    let ix = system_instruction::transfer(
+        &payer.pubkey(),
+        &recipient,
+        1
+    );
+    let tip_ix = solami::build_tip_ix(&payer.pubkey(), 0.0001);
+    let tx = Transaction::new_signed_with_payer(
+        &[ix, tip_ix],
+        Some(&payer.pubkey()),
+        &[&payer],
+        blockhash,
+    );
+    let sig = client.land_transaction(&tx.into()).await?;
+    println!("Transaction signature: {sig}");
+
+    Ok(())
+}
+```

@@ -1,68 +1,163 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Solami Documentation",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#2470B3",
+    "light": "#3389d0",
+    "dark": "#5FB8F9"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/favicon.png",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
               "index",
               "quickstart",
-              "development"
+              "authentication"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Infrastructure",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "infrastructure/rpc",
+              "infrastructure/grpc",
+              "infrastructure/websocket",
+              "infrastructure/shredstream",
+              "infrastructure/swqos",
+              {
+                "group": "Dedicated",
+                "pages": [
+                  "infrastructure/dedicated-nodes",
+                  "infrastructure/regions"
+                ]
+              }
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Pricing",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "pricing/plans",
+              "pricing/add-ons",
+              "pricing/billing"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Guides",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "guides/sending-transactions",
+              "guides/streaming-data",
+              "guides/api-keys"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "API Reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Overview",
             "pages": [
               "api-reference/introduction"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "RPC Methods",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              {
+                "group": "Accounts",
+                "pages": [
+                  "api-reference/rpc/get-account-info",
+                  "api-reference/rpc/get-balance",
+                  "api-reference/rpc/get-largest-accounts",
+                  "api-reference/rpc/get-minimum-balance-for-rent-exemption",
+                  "api-reference/rpc/get-multiple-accounts",
+                  "api-reference/rpc/get-program-accounts"
+                ]
+              },
+              {
+                "group": "Tokens",
+                "pages": [
+                  "api-reference/rpc/get-token-account-balance",
+                  "api-reference/rpc/get-token-accounts-by-delegate",
+                  "api-reference/rpc/get-token-accounts-by-owner",
+                  "api-reference/rpc/get-token-largest-accounts",
+                  "api-reference/rpc/get-token-supply"
+                ]
+              },
+              {
+                "group": "Transactions",
+                "pages": [
+                  "api-reference/rpc/get-fee-for-message",
+                  "api-reference/rpc/get-latest-blockhash",
+                  "api-reference/rpc/get-recent-prioritization-fees",
+                  "api-reference/rpc/get-signatures-for-address",
+                  "api-reference/rpc/get-signature-statuses",
+                  "api-reference/rpc/get-transaction",
+                  "api-reference/rpc/get-transaction-count",
+                  "api-reference/rpc/is-blockhash-valid",
+                  "api-reference/rpc/request-airdrop",
+                  "api-reference/rpc/send-transaction",
+                  "api-reference/rpc/simulate-transaction"
+                ]
+              },
+              {
+                "group": "Blocks",
+                "pages": [
+                  "api-reference/rpc/get-block",
+                  "api-reference/rpc/get-block-commitment",
+                  "api-reference/rpc/get-block-height",
+                  "api-reference/rpc/get-block-production",
+                  "api-reference/rpc/get-blocks",
+                  "api-reference/rpc/get-blocks-with-limit",
+                  "api-reference/rpc/get-block-time",
+                  "api-reference/rpc/get-first-available-block",
+                  "api-reference/rpc/get-recent-performance-samples",
+                  "api-reference/rpc/minimum-ledger-slot"
+                ]
+              },
+              {
+                "group": "Cluster",
+                "pages": [
+                  "api-reference/rpc/get-cluster-nodes",
+                  "api-reference/rpc/get-epoch-info",
+                  "api-reference/rpc/get-epoch-schedule",
+                  "api-reference/rpc/get-genesis-hash",
+                  "api-reference/rpc/get-health",
+                  "api-reference/rpc/get-highest-snapshot-slot",
+                  "api-reference/rpc/get-identity",
+                  "api-reference/rpc/get-leader-schedule",
+                  "api-reference/rpc/get-max-retransmit-slot",
+                  "api-reference/rpc/get-max-shred-insert-slot",
+                  "api-reference/rpc/get-slot",
+                  "api-reference/rpc/get-slot-leader",
+                  "api-reference/rpc/get-slot-leaders",
+                  "api-reference/rpc/get-version",
+                  "api-reference/rpc/get-vote-accounts"
+                ]
+              },
+              {
+                "group": "Economics",
+                "pages": [
+                  "api-reference/rpc/get-inflation-governor",
+                  "api-reference/rpc/get-inflation-rate",
+                  "api-reference/rpc/get-inflation-reward",
+                  "api-reference/rpc/get-stake-minimum-delegation",
+                  "api-reference/rpc/get-supply"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "REST API",
+            "pages": [
+              "api-reference/rest/api-keys",
+              "api-reference/rest/billing",
+              "api-reference/rest/usage"
             ]
           }
         ]
@@ -71,52 +166,40 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "Dashboard",
+          "href": "https://solami.fast",
+          "icon": "gauge"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Discord",
+          "href": "https://discord.gg/EGyCHpphtt",
+          "icon": "discord"
         }
       ]
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo/dark.svg",
+    "dark": "/logo/light.svg"
   },
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "https://discord.gg/EGyCHpphtt"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://solami.fast"
     }
-  },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/useSolami",
+      "discord": "https://discord.gg/EGyCHpphtt",
+      "telegram": "https://t.me/useSolami"
     }
   }
 }

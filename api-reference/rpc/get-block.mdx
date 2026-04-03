@@ -1,0 +1,104 @@
+---
+title: "getBlock"
+description: "Returns a confirmed block with transaction data."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getBlock",
+  "params": [
+    378967388,
+    {
+      "encoding": "json",
+      "transactionDetails": "full",
+      "maxSupportedTransactionVersion": 0
+    }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| slot | u64 | Slot number of the block to retrieve (required) |
+| config | object | Optional configuration object |
+| config.commitment | string | Commitment level: `confirmed` or `finalized` |
+| config.encoding | string | Encoding format for transaction data |
+| config.transactionDetails | string | Detail level: `full`, `accounts`, `signatures`, or `none` |
+| config.maxSupportedTransactionVersion | number | Maximum transaction version to return |
+| config.rewards | boolean | Whether to include rewards in the response |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "blockHeight": 328767388,
+    "blockTime": 1710000000,
+    "blockhash": "6EUDAG2UBZ1J7LrpV4ek3bSCFJhkLMVhJ96UPG2viMK8",
+    "parentSlot": 378967387,
+    "previousBlockhash": "5gJyBwTb1Nnx3JqwMmMZqhGMvsFai7vS8KUwLCXrVAmG",
+    "transactions": [],
+    "rewards": []
+  }
+}
+```
+
+- `blockHeight` - The number of blocks beneath this block.
+- `blockTime` - Estimated production time as a Unix timestamp in seconds.
+- `blockhash` - The hash of the block.
+- `parentSlot` - The slot of the parent block.
+- `previousBlockhash` - The hash of the parent block.
+- `transactions` - Array of transaction objects included in the block.
+- `rewards` - Array of reward objects. Returns `null` if the block is not confirmed.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "getBlock",
+    "params": [
+      378967388,
+      {
+        "encoding": "json",
+        "transactionDetails": "full",
+        "maxSupportedTransactionVersion": 0
+      }
+    ]
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getBlock",
+    params: [
+      378967388,
+      {
+        encoding: "json",
+        transactionDetails: "full",
+        maxSupportedTransactionVersion: 0,
+      },
+    ],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

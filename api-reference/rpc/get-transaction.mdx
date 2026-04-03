@@ -1,0 +1,55 @@
+---
+title: "getTransaction"
+description: "Returns transaction details for a confirmed transaction signature."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getTransaction",
+  "params": [
+    "TRANSACTION_SIGNATURE",
+    { "encoding": "jsonParsed", "maxSupportedTransactionVersion": 0 }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter  | Type   | Description                           |
+|------------|--------|---------------------------------------|
+| signature  | string | Transaction signature (base-58)       |
+| config     | object | `encoding`, `commitment`, `maxSupportedTransactionVersion` |
+
+## Response
+
+Returns the full transaction object including metadata, instructions, and signatures. Returns `null` if the transaction is not found.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "getTransaction",
+    "params": [
+      "5yGsRzg4...",
+      {"encoding": "jsonParsed", "maxSupportedTransactionVersion": 0}
+    ]
+  }'
+```
+
+```javascript JavaScript
+const tx = await connection.getTransaction("5yGsRzg4...", {
+  maxSupportedTransactionVersion: 0,
+});
+console.log(tx.meta.fee);
+```
+</CodeGroup>

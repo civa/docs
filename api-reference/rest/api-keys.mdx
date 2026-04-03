@@ -1,0 +1,73 @@
+---
+title: "API Keys"
+description: "Create, list, and revoke API keys."
+---
+
+## List API Keys
+
+```
+GET /auth/api-keys
+```
+
+Returns all API keys for the authenticated user.
+
+### Response
+
+```json
+[
+  {
+    "id": "key_123",
+    "label": "Production RPC",
+    "key_type": "RpcKey",
+    "created_at": 1700000000,
+    "last_used": 1700001000
+  }
+]
+```
+
+## Create API Key
+
+```
+POST /auth/api-keys
+```
+
+### Body
+
+```json
+{
+  "label": "My Key",
+  "key_type": "RpcKey"
+}
+```
+
+| Field    | Type   | Values                          |
+|----------|--------|---------------------------------|
+| label    | string | Human-readable key name         |
+| key_type | string | `ApiKey`, `RpcKey`, `GrpcKey`, `SwqosKey` |
+
+### Response
+
+```json
+{
+  "key_type": "RpcKey",
+  "api_key": "sk_live_..."
+}
+```
+
+<Warning>The `api_key` value is only returned once at creation time. Store it securely.</Warning>
+
+## Revoke API Key
+
+```
+DELETE /auth/api-keys/{id}
+```
+
+Immediately revokes the key. All requests using this key will fail.
+
+### Response
+
+```json
+{
+  "success": true
+}
+```

@@ -1,0 +1,72 @@
+---
+title: "getSupply"
+description: "Returns total, circulating, and non-circulating supply."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getSupply"
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| config | object | (Optional) Configuration object with `commitment` field and `excludeNonCirculatingAccountsList` (boolean) to exclude the list of non-circulating accounts from the response. |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "context": {
+      "slot": 1114
+    },
+    "value": {
+      "total": 1016000,
+      "circulating": 16000,
+      "nonCirculating": 1000000,
+      "nonCirculatingAccounts": [
+        "FEy8pTbP5fEoqMV1GdTz83byuA8EKByqYat1PKDgVAq5"
+      ]
+    }
+  },
+  "id": 1
+}
+```
+
+- `context.slot` - The slot at which the data was fetched.
+- `value.total` - Total supply in lamports.
+- `value.circulating` - Circulating supply in lamports.
+- `value.nonCirculating` - Non-circulating supply in lamports.
+- `value.nonCirculatingAccounts` - Array of account addresses holding non-circulating supply.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getSupply"}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getSupply",
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

@@ -1,0 +1,66 @@
+---
+title: "getInflationGovernor"
+description: "Returns the inflation governor parameters."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getInflationGovernor"
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| config | object | (Optional) Configuration object with `commitment` field. |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "initial": 0.15,
+    "terminal": 0.015,
+    "taper": 0.15,
+    "foundation": 0.05,
+    "foundationTerm": 7
+  },
+  "id": 1
+}
+```
+
+- `initial` - Initial inflation percentage from time 0.
+- `terminal` - Terminal inflation percentage.
+- `taper` - Rate per year at which inflation is lowered.
+- `foundation` - Percentage of total inflation allocated to the foundation.
+- `foundationTerm` - Duration of foundation pool inflation in years.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getInflationGovernor"}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getInflationGovernor",
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

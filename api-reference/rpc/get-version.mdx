@@ -1,0 +1,56 @@
+---
+title: "getVersion"
+description: "Returns the current Solana version running on the node."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getVersion"
+}
+```
+
+### Parameters
+
+None.
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "solana-core": "1.18.0",
+    "feature-set": 4215938412
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `solana-core` | string | Software version of solana-core |
+| `feature-set` | u32 | Unique identifier of the current software's feature set |
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getVersion"}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({"jsonrpc":"2.0","id":1,"method":"getVersion"}),
+});
+const data = await response.json();
+```
+</CodeGroup>

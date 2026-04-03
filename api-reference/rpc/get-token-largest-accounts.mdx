@@ -1,0 +1,74 @@
+---
+title: "getTokenLargestAccounts"
+description: "Returns the 20 largest accounts for an SPL Token mint."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getTokenLargestAccounts",
+  "params": ["3wyAj7Rt1TWVPZVteFJPLa26JmLvdb1CAKEFZm3NY75E"]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| pubkey | string | (required) Pubkey of the token mint to query, as a base-58 encoded string. |
+| config | object | (optional) Configuration object containing `commitment` (string). |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "context": { "slot": 1114 },
+    "value": [
+      {
+        "address": "FYjHNoFtSQ5uijKrZFyYAxvEr87hsKXkXcxkcmkBAf4r",
+        "amount": "771",
+        "decimals": 2,
+        "uiAmount": 7.71,
+        "uiAmountString": "7.71"
+      }
+    ]
+  }
+}
+```
+
+- `address` - Pubkey of the token account holding the largest balance.
+- `amount` - Raw token balance without decimals, as a string.
+- `decimals` - Number of base-10 digits to the right of the decimal place.
+- `uiAmount` - Token balance as a float, accounting for decimals.
+- `uiAmountString` - Token balance as a string, accounting for decimals.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getTokenLargestAccounts","params":["3wyAj7Rt1TWVPZVteFJPLa26JmLvdb1CAKEFZm3NY75E"]}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getTokenLargestAccounts",
+    params: ["3wyAj7Rt1TWVPZVteFJPLa26JmLvdb1CAKEFZm3NY75E"],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

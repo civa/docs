@@ -1,0 +1,101 @@
+---
+title: "getTokenAccountsByOwner"
+description: "Returns SPL Token accounts owned by a given address."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getTokenAccountsByOwner",
+  "params": [
+    "A1TMhSGzQxMr1TboBKtgixKz1sS6REASMxPo1qsyTSJd",
+    { "programId": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" },
+    { "encoding": "jsonParsed" }
+  ]
+}
+```
+
+### Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| pubkey | string | (required) Pubkey of the account owner to query, as a base-58 encoded string. |
+| filter | object | (required) Filter by `mint` (string) or `programId` (string). |
+| config | object | (optional) Configuration object containing `commitment` (string), `encoding` (string), `dataSlice` (object), `minContextSlot` (number). |
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "context": { "slot": 1114 },
+    "value": [
+      {
+        "pubkey": "BGocb4GEpbTFm8UFV2RkDSinaGPGVVfH1aBqN97dZ3ZR",
+        "account": {
+          "lamports": 1726080,
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "data": {
+            "program": "spl-token",
+            "parsed": {
+              "info": {
+                "tokenAmount": {
+                  "amount": "4900",
+                  "decimals": 2,
+                  "uiAmount": 49.0,
+                  "uiAmountString": "49"
+                },
+                "mint": "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr",
+                "owner": "A1TMhSGzQxMr1TboBKtgixKz1sS6REASMxPo1qsyTSJd",
+                "state": "initialized"
+              },
+              "type": "account"
+            }
+          },
+          "executable": false,
+          "rentEpoch": 0
+        }
+      }
+    ]
+  }
+}
+```
+
+- `pubkey` - Pubkey of the token account.
+- `account.data.parsed.info.tokenAmount` - Token balance of the account.
+- `account.data.parsed.info.mint` - The token mint address.
+- `account.data.parsed.info.owner` - The owner of the token account.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getTokenAccountsByOwner","params":["A1TMhSGzQxMr1TboBKtgixKz1sS6REASMxPo1qsyTSJd",{"programId":"TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"},{"encoding":"jsonParsed"}]}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "getTokenAccountsByOwner",
+    params: [
+      "A1TMhSGzQxMr1TboBKtgixKz1sS6REASMxPo1qsyTSJd",
+      { programId: "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" },
+      { encoding: "jsonParsed" },
+    ],
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

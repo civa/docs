@@ -1,0 +1,70 @@
+---
+title: "getHealth"
+description: "Returns the current health of the node."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getHealth"
+}
+```
+
+### Parameters
+
+None.
+
+## Response
+
+Healthy node:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "ok"
+}
+```
+
+Unhealthy node:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "error": {
+    "code": -32005,
+    "message": "Node is unhealthy",
+    "data": {}
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `result` | string | `"ok"` if the node is healthy |
+| `error.code` | i32 | `-32005` if the node is unhealthy |
+| `error.message` | string | Description of the unhealthy state |
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getHealth"}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({"jsonrpc":"2.0","id":1,"method":"getHealth"}),
+});
+const data = await response.json();
+```
+</CodeGroup>

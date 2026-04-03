@@ -1,0 +1,56 @@
+---
+title: "getHighestSnapshotSlot"
+description: "Returns the highest slot information for which the node has snapshots."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getHighestSnapshotSlot"
+}
+```
+
+### Parameters
+
+None.
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "full": 100,
+    "incremental": 110
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `full` | u64 | Highest full snapshot slot |
+| `incremental` | u64 \| null | Highest incremental snapshot slot based on the full snapshot |
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getHighestSnapshotSlot"}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({"jsonrpc":"2.0","id":1,"method":"getHighestSnapshotSlot"}),
+});
+const data = await response.json();
+```
+</CodeGroup>

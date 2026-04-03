@@ -1,0 +1,58 @@
+---
+title: "minimumLedgerSlot"
+description: "Returns the lowest slot in the node's ledger."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "minimumLedgerSlot"
+}
+```
+
+### Parameters
+
+This method takes no parameters.
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": 1234
+}
+```
+
+- `result` - The lowest slot in the node's ledger as a u64.
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "minimumLedgerSlot"
+  }'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    jsonrpc: "2.0",
+    id: 1,
+    method: "minimumLedgerSlot",
+  }),
+});
+const data = await response.json();
+```
+</CodeGroup>

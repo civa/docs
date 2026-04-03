@@ -1,0 +1,52 @@
+---
+title: "getMaxShredInsertSlot"
+description: "Returns the highest slot seen from the shred insert stage."
+---
+
+## Request
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "getMaxShredInsertSlot"
+}
+```
+
+### Parameters
+
+None.
+
+## Response
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": 1234
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `result` | u64 | The highest slot number seen from the shred insert stage |
+
+## Example
+
+<CodeGroup>
+```bash cURL
+curl "https://rpc.solami.fast/sol?api_key=YOUR_API_KEY" \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"getMaxShredInsertSlot"}'
+```
+
+```javascript JavaScript
+const response = await fetch("https://rpc.solami.fast/sol?api_key=YOUR_API_KEY", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({"jsonrpc":"2.0","id":1,"method":"getMaxShredInsertSlot"}),
+});
+const data = await response.json();
+```
+</CodeGroup>
